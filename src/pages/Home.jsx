@@ -1,0 +1,215 @@
+// src/pages/Home.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import {  Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
+
+const shopItems = [
+  { id: 1, title: "فرش تبریز", image: "/images/product1.jpg", price: "۵۰۰٬۰۰۰ تومان" },
+  { id: 2, title: "تابلو شاهنامه", image: "/images/product2.jpg", price: "۲٬۵۰۰٬۰۰۰ تومان" },
+  { id: 3, title: "ست سفالی", image: "/images/product3.jpg", price: "۴۰۰٬۰۰۰ تومان" },
+  { id: 4, title: "تابلو خوشنویسی", image: "/images/product4.jpg", price: "۶۰۰٬۰۰۰ تومان" },
+];
+
+const auctions = [
+  { id: 1, title: "تابلو شاهنامه", image: "/images/product2.jpg", desc: "اثر منتخب نگارگر" },
+  { id: 2, title: "ست سفالی", image: "/images/product3.jpg", desc: "دست‌ساز معاصر" },
+  { id: 3, title: "تابلو خوشنویسی", image: "/images/product4.jpg", desc: "نستعلیقِ استاد" },
+];
+
+export default function Home() {
+  return (
+    <main className="pt-16">
+      {/* ✅ Hero Carousel */}
+      <section className="mb-6">
+        <Swiper
+          modules={[ Pagination]}
+          
+          pagination={{ clickable: true }}
+          loop
+          className="h-[300px] md:h-[500px]"
+          dir="rtl"
+        >
+          <SwiperSlide>
+            <div className="relative h-full w-full">
+              <img src="/images/hero1.jpg" className="w-full h-full object-cover" />
+              <div className="absolute bottom-6 left-6 bg-black/50 text-white p-4 rounded">
+                <h2 className="text-xl md:text-2xl font-bold">حراج ویژه آثار هنری</h2>
+                <p className="text-sm">اکنون مزایده فعال است — از دست ندهید!</p>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="relative h-full w-full">
+              <img src="/images/hero2.jpg" className="w-full h-full object-cover" />
+              <div className="absolute bottom-6 left-6 bg-black/50 text-white p-4 rounded">
+                <h2 className="text-xl md:text-2xl font-bold">جدیدترین محصولات فروشگاه</h2>
+                <p className="text-sm">فرش، تابلو و آثار ارزشمند در یک مکان</p>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="relative h-full w-full">
+              <img src="/images/hero3.jpg" className="w-full h-full object-cover" />
+              <div className="absolute bottom-6 left-6 bg-black/50 text-white p-4 rounded">
+                <h2 className="text-xl md:text-2xl font-bold">ثبت اثر برای صدور شناسنامه</h2>
+                <p className="text-sm">اطمینان از اصالت با گواهی رسمی</p>
+              </div>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+      </section>
+
+      {/* ✅ فروشگاه Slider */}
+      <section className="p-4 md:p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold">فروشگاه</h2>
+          <Link to="/shop" className="text-[var(--brand)]">مشاهده همه</Link>
+        </div>
+
+        <Swiper
+         
+          spaceBetween={16}
+          slidesPerView={1.2}
+          breakpoints={{ 768: { slidesPerView: 3 } }}
+          dir="rtl"
+        >
+          {shopItems.map((item) => (
+            <SwiperSlide key={item.id}>
+              <Link to={`/product/${item.id}`}>
+                <article className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition">
+                  <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
+                  <div className="p-3">
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.price}</p>
+                  </div>
+                </article>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      {/* ✅ مزایده Slider */}
+      <section className="p-4 md:p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold">مزایده</h2>
+          <Link to="/auction" className="text-[var(--brand)]">مشاهده همه</Link>
+        </div>
+
+        <Swiper
+          
+          spaceBetween={16}
+          slidesPerView={1.2}
+          breakpoints={{ 768: { slidesPerView: 2 } }}
+          dir="rtl"
+        >
+          {auctions.map((a) => (
+            <SwiperSlide key={a.id}>
+              <Link to={`/product/${a.id}`}>
+                <article className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition">
+                  <img src={a.image} alt={a.title} className="w-full h-48 object-cover" />
+                  <div className="p-3">
+                    <h3 className="font-semibold">{a.title}</h3>
+                    <p className="text-sm text-gray-600">{a.desc}</p>
+                  </div>
+                </article>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      {/* ✅ Mini Request Form */}
+      <section className="p-4 md:p-6">
+        <h2 className="text-xl font-bold mb-3">درخواست ثبت اثر (سریع)</h2>
+        <div className="bg-white rounded-xl p-4 border">
+          <MiniRequestForm />
+        </div>
+
+        <div className="mt-4">
+          <Link to="/certificate" className="inline-block px-4 py-2 bg-[var(--brand)] text-white rounded">رفتن به فرم کامل</Link>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function MiniRequestForm() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const title = fd.get("title")?.toString().trim();
+    const name = fd.get("name")?.toString().trim();
+    const phone = fd.get("phone")?.toString().trim();
+    const files = Array.from(fd.getAll("photos"));
+
+    if (!title || !name || !phone) {
+      alert("لطفاً همه فیلدهای ضروری را پر کنید.");
+      return;
+    }
+
+    const toBase64 = (file) =>
+      new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.onload = () => res(reader.result);
+        reader.onerror = rej;
+        reader.readAsDataURL(file);
+      });
+
+    const imagesBase64 = [];
+    try {
+      for (const f of files) {
+        if (f && f.size) imagesBase64.push(await toBase64(f));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("خطا در بارگذاری تصاویر.");
+      return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem("mini_register_requests") || "[]");
+    saved.push({
+      title,
+      name,
+      phone,
+      images: imagesBase64,
+      date: new Date().toISOString(),
+      source: "mini",
+    });
+    localStorage.setItem("mini_register_requests", JSON.stringify(saved));
+
+    e.currentTarget.reset();
+    alert("درخواست سریع شما ثبت شد (دمو).");
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div>
+        <label className="block text-sm mb-1">عنوان اثر *</label>
+        <input name="title" required className="w-full border p-2 rounded" placeholder="مثلاً: فرش تبریز اصیل" />
+      </div>
+      <div>
+        <label className="block text-sm mb-1">تصاویر اثر (اختیاری)</label>
+        <input name="photos" type="file" accept="image/*" multiple className="w-full" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-sm mb-1">نام *</label>
+          <input name="name" required className="w-full border p-2 rounded" />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">شماره تماس *</label>
+          <input name="phone" type="tel" required className="w-full border p-2 rounded" placeholder="09xxxxxxxxx" />
+        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <button type="submit" className="px-4 py-2 bg-[var(--brand)] text-white rounded">ارسال درخواست</button>
+        <small className="text-gray-500 text-xs">ارسال به صورت دمو</small>
+      </div>
+    </form>
+  );
+}
