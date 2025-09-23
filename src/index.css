@@ -21,6 +21,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark body {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+.dark .bg-white {
+  background-color: #2d3748;
+}
+
 /* Small helper */
 .animate-fadeIn {
   animation: fadeIn 220ms ease both;

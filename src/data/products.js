@@ -12,7 +12,7 @@ export const artists = [
   { id: "nikzad", name: "نیکزاد", bio: "سفالگر معاصر" },
 ];
 
-export const products = [
+export const shopItems = [
   {
     id: 1,
     name: "فرش دستباف تبریز",
@@ -49,4 +49,11 @@ export const products = [
     artistId: "samani",
     price: 420,
   },
+];
+
+export const auctions = [
+  { id: 1, name: "تابلو شاهنامه", image: "/images/product2.jpg", desc: "اثر منتخب نگارگر", startPrice: 500, endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) },
+  { id: 2, name: "ست سفالی", image: "/images/product3.jpg", desc: "دست‌ساز معاصر", startPrice: 100, endDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) },
+  { id: 3, name: "تابلو خوشنویسی", image: "/images/product4.jpg", desc: "نستعلیقِ استاد", startPrice: 300, endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) },
+  { id: 4, name: "فرش نفیس", image: "/images/product1.jpg", desc: "فرش دستباف قدیمی", startPrice: 1000, endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) },
 ];

@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import SideMenu from "./components/SideMenu";
 import LoginModal from "./components/LoginModal";
 import Footer from "./components/Footer";
-import ProductPage from "./pages/ProductPage";
-import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import Auction from "./pages/Auction";
-import Certificate from "./pages/Certificate";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
+
+const Home = lazy(() => import("./pages/Home"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Auction = lazy(() => import("./pages/Auction"));
+const Certificate = lazy(() => import("./pages/Certificate"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const LoadingFallback = () => (
+  <div className="flex-1 flex items-center justify-center">
+    <p>در حال بارگذاری...</p>
+  </div>
+);
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,17 +45,18 @@ export default function App() {
       />
 
       <main className="flex-1 pt-16">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/auction" element={<Auction />} />
-          <Route path="/certificate" element={<Certificate />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/auction" element={<Auction />} />
+            <Route path="/certificate" element={<Certificate />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
 
       <Footer />
