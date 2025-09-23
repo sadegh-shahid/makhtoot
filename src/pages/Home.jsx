@@ -1,28 +1,21 @@
 // src/pages/Home.jsx
 import React from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {  Pagination } from "swiper/modules";
+import { shopItems, auctions } from "../data/products";
 
 import "swiper/css";
 import "swiper/css/pagination";
 
-const shopItems = [
-  { id: 1, title: "فرش تبریز", image: "/images/product1.jpg", price: "۵۰۰٬۰۰۰ تومان" },
-  { id: 2, title: "تابلو شاهنامه", image: "/images/product2.jpg", price: "۲٬۵۰۰٬۰۰۰ تومان" },
-  { id: 3, title: "ست سفالی", image: "/images/product3.jpg", price: "۴۰۰٬۰۰۰ تومان" },
-  { id: 4, title: "تابلو خوشنویسی", image: "/images/product4.jpg", price: "۶۰۰٬۰۰۰ تومان" },
-];
-
-const auctions = [
-  { id: 1, title: "تابلو شاهنامه", image: "/images/product2.jpg", desc: "اثر منتخب نگارگر" },
-  { id: 2, title: "ست سفالی", image: "/images/product3.jpg", desc: "دست‌ساز معاصر" },
-  { id: 3, title: "تابلو خوشنویسی", image: "/images/product4.jpg", desc: "نستعلیقِ استاد" },
-];
-
 export default function Home() {
   return (
     <main className="pt-16">
+      <Helmet>
+        <title>گالری هنری پارسیان - صفحه اصلی</title>
+        <meta name="description" content="گالری هنری آنلاین پارسیان، محلی برای نمایش و فروش آثار هنری اصیل ایرانی." />
+      </Helmet>
       {/* ✅ Hero Carousel */}
       <section className="mb-6">
         <Swiper
@@ -35,7 +28,7 @@ export default function Home() {
         >
           <SwiperSlide>
             <div className="relative h-full w-full">
-              <img src="/images/hero1.jpg" className="w-full h-full object-cover" />
+              <img src="/images/hero1.jpg" className="w-full h-full object-cover" loading="lazy" />
               <div className="absolute bottom-6 left-6 bg-black/50 text-white p-4 rounded">
                 <h2 className="text-xl md:text-2xl font-bold">حراج ویژه آثار هنری</h2>
                 <p className="text-sm">اکنون مزایده فعال است — از دست ندهید!</p>
@@ -44,7 +37,7 @@ export default function Home() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="relative h-full w-full">
-              <img src="/images/hero2.jpg" className="w-full h-full object-cover" />
+              <img src="/images/hero2.jpg" className="w-full h-full object-cover" loading="lazy" />
               <div className="absolute bottom-6 left-6 bg-black/50 text-white p-4 rounded">
                 <h2 className="text-xl md:text-2xl font-bold">جدیدترین محصولات فروشگاه</h2>
                 <p className="text-sm">فرش، تابلو و آثار ارزشمند در یک مکان</p>
@@ -53,7 +46,7 @@ export default function Home() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="relative h-full w-full">
-              <img src="/images/hero3.jpg" className="w-full h-full object-cover" />
+              <img src="/images/hero3.jpg" className="w-full h-full object-cover" loading="lazy" />
               <div className="absolute bottom-6 left-6 bg-black/50 text-white p-4 rounded">
                 <h2 className="text-xl md:text-2xl font-bold">ثبت اثر برای صدور شناسنامه</h2>
                 <p className="text-sm">اطمینان از اصالت با گواهی رسمی</p>
@@ -138,20 +131,12 @@ export default function Home() {
   );
 }
 
+import { useForm } from "react-hook-form";
+
 function MiniRequestForm() {
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const title = fd.get("title")?.toString().trim();
-    const name = fd.get("name")?.toString().trim();
-    const phone = fd.get("phone")?.toString().trim();
-    const files = Array.from(fd.getAll("photos"));
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-    if (!title || !name || !phone) {
-      alert("لطفاً همه فیلدهای ضروری را پر کنید.");
-      return;
-    }
-
+  const onSubmit = async (data) => {
     const toBase64 = (file) =>
       new Promise((res, rej) => {
         const reader = new FileReader();
@@ -162,7 +147,7 @@ function MiniRequestForm() {
 
     const imagesBase64 = [];
     try {
-      for (const f of files) {
+      for (const f of data.photos) {
         if (f && f.size) imagesBase64.push(await toBase64(f));
       }
     } catch (err) {
@@ -173,37 +158,51 @@ function MiniRequestForm() {
 
     const saved = JSON.parse(localStorage.getItem("mini_register_requests") || "[]");
     saved.push({
-      title,
-      name,
-      phone,
+      title: data.title,
+      name: data.name,
+      phone: data.phone,
       images: imagesBase64,
       date: new Date().toISOString(),
       source: "mini",
     });
     localStorage.setItem("mini_register_requests", JSON.stringify(saved));
 
-    e.currentTarget.reset();
+    reset();
     alert("درخواست سریع شما ثبت شد (دمو).");
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <div>
         <label className="block text-sm mb-1">عنوان اثر *</label>
-        <input name="title" required className="w-full border p-2 rounded" placeholder="مثلاً: فرش تبریز اصیل" />
+        <input {...register("title", { required: "عنوان اثر الزامی است" })} className="w-full border p-2 rounded" placeholder="مثلاً: فرش تبریز اصیل" />
+        {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
       </div>
       <div>
         <label className="block text-sm mb-1">تصاویر اثر (اختیاری)</label>
-        <input name="photos" type="file" accept="image/*" multiple className="w-full" />
+        <input {...register("photos")} type="file" accept="image/*" multiple className="w-full" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <label className="block text-sm mb-1">نام *</label>
-          <input name="name" required className="w-full border p-2 rounded" />
+          <input {...register("name", { required: "نام الزامی است" })} className="w-full border p-2 rounded" />
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
         </div>
         <div>
           <label className="block text-sm mb-1">شماره تماس *</label>
-          <input name="phone" type="tel" required className="w-full border p-2 rounded" placeholder="09xxxxxxxxx" />
+          <input
+            {...register("phone", {
+              required: "شماره تماس الزامی است",
+              pattern: {
+                value: /09[0-9]{9}/,
+                message: "شماره تماس معتبر نیست"
+              }
+            })}
+            type="tel"
+            className="w-full border p-2 rounded"
+            placeholder="09xxxxxxxxx"
+          />
+          {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
         </div>
       </div>
       <div className="flex justify-between items-center">
