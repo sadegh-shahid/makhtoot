@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, FreeMode } from "swiper/modules";
-import { shopItems, auctions, artists, categories } from "../data/products";
+import { products, artists, categories } from "../data/products";
 import { useCart } from "../context/CartContext";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -15,8 +15,7 @@ export default function ProductPage() {
     const { addToCart, toggleFavorite, isFavorite } = useCart();
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-    const allItems = [...shopItems, ...auctions];
-    const product = allItems.find((p) => p.id === parseInt(id));
+    const product = products.find((p) => p.id === parseInt(id));
 
     if (!product) {
         return <div className="p-6 text-center">محصول یافت نشد.</div>;
@@ -24,15 +23,13 @@ export default function ProductPage() {
 
     const artist = artists.find((a) => a.id === product.artistId);
     const category = categories.find((c) => c.id === product.category);
-    const relatedProducts = shopItems.filter(
+    const relatedProducts = products.filter(
         (p) => p.category === product.category && p.id !== product.id
     );
 
-    const isAuction = "desc" in product && !("price" in product);
-
     return (
         <div className="container mx-auto px-4 py-10">
-            <title>{product.name || product.title} - گالری هنری پارسیان</title>
+            <title>{product.name} - گالری هنری پارسیان</title>
             <meta name="description" content={product.desc} />
             <div className="grid md:grid-cols-2 gap-8">
                 <div>
@@ -68,31 +65,22 @@ export default function ProductPage() {
                     </Swiper>
                 </div>
                 <div className="flex flex-col gap-4">
-                    <h1 className="text-2xl font-bold">{product.name || product.title}</h1>
+                    <h1 className="text-2xl font-bold">{product.name}</h1>
                     <p className="text-gray-600">{product.desc}</p>
                     {category && <p className="text-gray-700">دسته‌بندی: {category.title}</p>}
                     {artist && <p className="text-gray-700">هنرمند: {artist.name}</p>}
 
-                    {isAuction ? (
-                        <div>
-                            <p className="text-xl font-semibold text-blue-600">مزایده فعال</p>
-                            <button className="bg-blue-600 text-white rounded-lg px-4 py-2 mt-4">
-                                ثبت پیشنهاد
-                            </button>
-                        </div>
-                    ) : (
-                        <div>
-                            <p className="text-xl font-semibold text-green-600">
-                                {product.price} $
-                            </p>
-                            <button
-                                onClick={() => addToCart(product)}
-                                className="bg-green-600 text-white rounded-lg px-4 py-2 mt-4"
-                            >
-                                افزودن به سبد خرید
-                            </button>
-                        </div>
-                    )}
+                    <div>
+                        <p className="text-xl font-semibold text-green-600">
+                            {product.price} $
+                        </p>
+                        <button
+                            onClick={() => addToCart(product)}
+                            className="bg-green-600 text-white rounded-lg px-4 py-2 mt-4"
+                        >
+                            افزودن به سبد خرید
+                        </button>
+                    </div>
                     <button
                         onClick={() => toggleFavorite(product)}
                         className={`mt-4 p-2 rounded-lg border ${isFavorite(product.id) ? "bg-red-100" : ""}`}
@@ -113,7 +101,7 @@ export default function ProductPage() {
                     >
                         {relatedProducts.map((p) => (
                             <SwiperSlide key={p.id}>
-                                <ProductCard product={p} artistName={artist.name} />
+                                <ProductCard product={p} artistName={artists.find(a => a.id === p.artistId)?.name} />
                             </SwiperSlide>
                         ))}
                     </Swiper>
