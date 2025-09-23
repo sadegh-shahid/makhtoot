@@ -1,6 +1,6 @@
 // src/pages/Shop.jsx
 import React, { useState, useMemo } from "react";
-import { shopItems, artists, categories } from "../data/products";
+import { products, artists, categories } from "../data/products";
 import ProductCard from "../components/ProductCard";
 
 export default function Shop() {
@@ -11,7 +11,7 @@ export default function Shop() {
   const artistNameOf = (id) => artists.find((a) => a.id === id)?.name || "";
 
   const filteredItems = useMemo(() => {
-    let items = shopItems;
+    let items = products;
 
     if (searchQuery) {
       items = items.filter((item) =>

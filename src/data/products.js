@@ -12,11 +12,11 @@ export const artists = [
   { id: "nikzad", name: "نیکزاد", bio: "سفالگر معاصر" },
 ];
 
-export const shopItems = [
+export const products = [
   {
     id: 1,
     name: "فرش دستباف تبریز",
-    image: "/images/product1.jpg",
+    image: "https://placehold.co/600x400?text=Tabriz+Carpet",
     desc: "فرش اصیل ایرانی با طرح لچک ترنج",
     category: "carpets",
     artistId: "attarbashi",
@@ -25,7 +25,7 @@ export const shopItems = [
   {
     id: 2,
     name: "مینیاتور بزم شاهنامه",
-    image: "/images/product2.jpg",
+    image: "https://placehold.co/600x400?text=Shahnameh+Miniature",
     desc: "نگارگری الهام‌گرفته از فردوسی",
     category: "miniatures",
     artistId: "samani",
@@ -34,7 +34,7 @@ export const shopItems = [
   {
     id: 3,
     name: "کاسه سفالی لعاب فیروزه‌ای",
-    image: "/images/product3.jpg",
+    image: "https://placehold.co/600x400?text=Ceramic+Bowl",
     desc: "دست‌ساز با لعاب سنتی",
     category: "ceramics",
     artistId: "nikzad",
@@ -43,17 +43,10 @@ export const shopItems = [
   {
     id: 4,
     name: "تابلو خوشنویسی نستعلیق",
-    image: "/images/product4.jpg",
+    image: "https://placehold.co/600x400?text=Calligraphy",
     desc: "شعر حافظ با قلم نی",
     category: "calligraphy",
     artistId: "samani",
     price: 420,
   },
-];
-
-export const auctions = [
-  { id: 1, name: "تابلو شاهنامه", image: "/images/product2.jpg", desc: "اثر منتخب نگارگر", startPrice: 500, endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) },
-  { id: 2, name: "ست سفالی", image: "/images/product3.jpg", desc: "دست‌ساز معاصر", startPrice: 100, endDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) },
-  { id: 3, name: "تابلو خوشنویسی", image: "/images/product4.jpg", desc: "نستعلیقِ استاد", startPrice: 300, endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) },
-  { id: 4, name: "فرش نفیس", image: "/images/product1.jpg", desc: "فرش دستباف قدیمی", startPrice: 1000, endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) },
 ];
