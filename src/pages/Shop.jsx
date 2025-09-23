@@ -1,6 +1,5 @@
 // src/pages/Shop.jsx
 import React, { useState, useMemo } from "react";
-import { Helmet } from "react-helmet";
 import { shopItems, artists, categories } from "../data/products";
 import ProductCard from "../components/ProductCard";
 
@@ -35,10 +34,8 @@ export default function Shop() {
 
   return (
     <main className="pt-16 p-4 md:p-6 max-w-6xl mx-auto">
-      <Helmet>
-        <title>فروشگاه - گالری هنری پارسیان</title>
-        <meta name="description" content="محصولات هنری اصیل ایرانی را از فروشگاه ما خریداری کنید." />
-      </Helmet>
+      <title>فروشگاه - گالری هنری پارسیان</title>
+      <meta name="description" content="محصولات هنری اصیل ایرانی را از فروشگاه ما خریداری کنید." />
       <h1 className="text-2xl font-bold mb-4">فروشگاه</h1>
 
       <div className="flex flex-col md:flex-row gap-4 mb-8">
