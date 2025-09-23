@@ -1,6 +1,5 @@
 // src/pages/Home.jsx
 import React from "react";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {  Pagination } from "swiper/modules";
@@ -12,10 +11,8 @@ import "swiper/css/pagination";
 export default function Home() {
   return (
     <main className="pt-16">
-      <Helmet>
-        <title>گالری هنری پارسیان - صفحه اصلی</title>
-        <meta name="description" content="گالری هنری آنلاین پارسیان، محلی برای نمایش و فروش آثار هنری اصیل ایرانی." />
-      </Helmet>
+      <title>گالری هنری پارسیان - صفحه اصلی</title>
+      <meta name="description" content="گالری هنری آنلاین پارسیان، محلی برای نمایش و فروش آثار هنری اصیل ایرانی." />
       {/* ✅ Hero Carousel */}
       <section className="mb-6">
         <Swiper

@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, FreeMode } from "swiper/modules";
 import { shopItems, auctions, artists, categories } from "../data/products";
@@ -33,10 +32,8 @@ export default function ProductPage() {
 
     return (
         <div className="container mx-auto px-4 py-10">
-            <Helmet>
-                <title>{product.name || product.title} - گالری هنری پارسیان</title>
-                <meta name="description" content={product.desc} />
-            </Helmet>
+            <title>{product.name || product.title} - گالری هنری پارسیان</title>
+            <meta name="description" content={product.desc} />
             <div className="grid md:grid-cols-2 gap-8">
                 <div>
                     <Swiper
