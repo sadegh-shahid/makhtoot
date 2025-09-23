@@ -50,3 +50,14 @@ export const products = [
     price: 420,
   },
 ];
+
+export const auctions = [
+  {
+    id: 101,
+    name: "قالیچه ابریشمی قم",
+    image: "https://placehold.co/600x400?text=Silk+Rug",
+    desc: "قالیچه دستباف ابریشمی از قم با طرح درختی",
+    startPrice: 1500,
+    endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000)
+  },
+];

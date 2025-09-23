@@ -13,6 +13,7 @@ const Certificate = lazy(() => import("./pages/Certificate"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const LoadingFallback = () => (
@@ -50,6 +51,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/auction" element={<Auction />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/certificate" element={<Certificate />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

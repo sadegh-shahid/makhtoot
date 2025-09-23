@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, FreeMode } from "swiper/modules";
-import { products, artists, categories } from "../data/products";
+import { products, auctions, artists, categories } from "../data/products";
 import { useCart } from "../context/CartContext";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -15,7 +15,8 @@ export default function ProductPage() {
     const { addToCart, toggleFavorite, isFavorite } = useCart();
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-    const product = products.find((p) => p.id === parseInt(id));
+    const allItems = [...products, ...auctions];
+    const product = allItems.find((p) => p.id === parseInt(id));
 
     if (!product) {
         return <div className="p-6 text-center">محصول یافت نشد.</div>;
@@ -26,6 +27,8 @@ export default function ProductPage() {
     const relatedProducts = products.filter(
         (p) => p.category === product.category && p.id !== product.id
     );
+
+    const isAuction = "startPrice" in product;
 
     return (
         <div className="container mx-auto px-4 py-10">
@@ -70,17 +73,26 @@ export default function ProductPage() {
                     {category && <p className="text-gray-700">دسته‌بندی: {category.title}</p>}
                     {artist && <p className="text-gray-700">هنرمند: {artist.name}</p>}
 
-                    <div>
-                        <p className="text-xl font-semibold text-green-600">
-                            {product.price} $
-                        </p>
-                        <button
-                            onClick={() => addToCart(product)}
-                            className="bg-green-600 text-white rounded-lg px-4 py-2 mt-4"
-                        >
-                            افزودن به سبد خرید
-                        </button>
-                    </div>
+                    {isAuction ? (
+                        <div>
+                            <p className="text-xl font-semibold text-blue-600">شروع قیمت از: {product.startPrice}$</p>
+                            <button className="bg-blue-600 text-white rounded-lg px-4 py-2 mt-4">
+                                شرکت در مزایده
+                            </button>
+                        </div>
+                    ) : (
+                        <div>
+                            <p className="text-xl font-semibold text-green-600">
+                                {product.price} $
+                            </p>
+                            <button
+                                onClick={() => addToCart(product)}
+                                className="bg-green-600 text-white rounded-lg px-4 py-2 mt-4"
+                            >
+                                افزودن به سبد خرید
+                            </button>
+                        </div>
+                    )}
                     <button
                         onClick={() => toggleFavorite(product)}
                         className={`mt-4 p-2 rounded-lg border ${isFavorite(product.id) ? "bg-red-100" : ""}`}
