@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../utils/firebase';
+import { supabase } from '../utils/supabase';
 
 const AuthContext = createContext();
 
@@ -14,41 +12,78 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   async function signup(email, password, role) {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    await setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      role: role,
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
     });
-    // The onAuthStateChanged listener will set the currentUser
-    return userCredential;
+
+    if (error) {
+      throw error;
+    }
+
+    // After a successful signup, insert the user's role into the 'users' table.
+    // The user's ID from the auth schema is used as the primary key.
+    const { error: insertError } = await supabase
+      .from('users')
+      .insert({ id: data.user.id, email: data.user.email, role: role });
+
+    if (insertError) {
+      // If creating the profile fails, we should ideally handle this more gracefully.
+      // For now, we'll log the error and throw it.
+      console.error("Failed to create user profile:", insertError);
+      throw insertError;
+    }
+
+    return data;
   }
 
-  function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+  async function login(email, password) {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
   }
 
-  function logout() {
-    return signOut(auth);
+  async function logout() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      throw error;
+    }
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          setCurrentUser({ ...user, ...userDoc.data() });
-        } else {
-          setCurrentUser(user);
-        }
-      } else {
-        setCurrentUser(null);
-      }
-      setLoading(false);
-    });
+    setLoading(true);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session) {
+          const user = session.user;
+          // Fetch the user's profile from the 'users' table
+          const { data: profile, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', user.id)
+            .single();
 
-    return unsubscribe;
+          if (error) {
+            console.error('Error fetching user profile:', error);
+            setCurrentUser(user); // Fallback to the user object without profile data
+          } else {
+            setCurrentUser({ ...user, ...profile });
+          }
+        } else {
+          setCurrentUser(null);
+        }
+        setLoading(false);
+      }
+    );
+
+    return () => {
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const value = {
