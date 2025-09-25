@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { CartProvider } from "./context/CartContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 import "./index.css"; // Tailwind or your global styles
 
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <ThemeProvider>
         <CartProvider>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </CartProvider>
       </ThemeProvider>
     </BrowserRouter>

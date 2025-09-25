@@ -3,14 +3,24 @@ import { NavLink, Link } from "react-router-dom";
 import Logo from "./Logo";
 import { useCart } from "../context/CartContext";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Header({ onMenuToggle, onLoginClick }) {
   const { cartItems } = useCart();
   const { theme, toggleTheme } = useTheme();
+  const { currentUser, logout } = useAuth();
   const linkCls = ({ isActive }) =>
     `px-2 py-1 rounded ${isActive ? "text-[var(--brand)] font-semibold" : "text-gray-800 dark:text-gray-200 hover:text-[var(--brand)]"}`;
 
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
@@ -31,11 +41,11 @@ export default function Header({ onMenuToggle, onLoginClick }) {
 
         {/* Desktop nav (right after logo) */}
         <nav className="hidden md:flex items-center gap-4 ml-6">
+          <NavLink to="/" className={linkCls}>صفحه اصلی</NavLink>
           <NavLink to="/shop" className={linkCls}>فروشگاه</NavLink>
           <NavLink to="/auction" className={linkCls}>مزایده</NavLink>
-          <NavLink to="/certificate" className={linkCls}>صدور شناسنامه</NavLink>
-          <NavLink to="/about" className={linkCls}>درباره ما</NavLink>
-          <NavLink to="/contact" className={linkCls}>تماس با ما</NavLink>
+          <NavLink to="/sell" className={linkCls}>فروش</NavLink>
+          <NavLink to="/account" className={linkCls}>حساب کاربری</NavLink>
         </nav>
 
         {/* Login & Cart on far end */}
@@ -53,7 +63,11 @@ export default function Header({ onMenuToggle, onLoginClick }) {
           <button onClick={toggleTheme} className="w-10 h-10 rounded-lg border flex items-center justify-center dark:text-white">
             {theme === "light" ? "🌙" : "☀️"}
           </button>
-          <button onClick={onLoginClick} className="px-4 py-2 rounded-lg bg-[var(--brand)] text-white">ورود / ثبت‌نام</button>
+          {currentUser ? (
+            <button onClick={handleLogout} className="px-4 py-2 rounded-lg bg-red-500 text-white">خروج</button>
+          ) : (
+            <button onClick={onLoginClick} className="px-4 py-2 rounded-lg bg-[var(--brand)] text-white">ورود / ثبت‌نام</button>
+          )}
         </div>
       </div>
     </header>

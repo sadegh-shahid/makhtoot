@@ -15,6 +15,11 @@ const Contact = lazy(() => import("./pages/Contact"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Account = lazy(() => import("./pages/Account"));
+const Sell = lazy(() => import("./pages/Sell"));
+
 
 const LoadingFallback = () => (
   <div className="flex-1 flex items-center justify-center">
@@ -56,6 +61,10 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/sell" element={<Sell />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
