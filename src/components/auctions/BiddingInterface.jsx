@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function BiddingInterface({ auction, onBid }) {
-  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm();
-  const minBid = (auction.currentBid || auction.startPrice) + auction.minIncrement;
-  const bidAmount = watch('amount', minBid);
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  // Use the nullish coalescing operator to handle cases where current_bid might be null
+  const minBid = (auction.current_bid ?? auction.start_price) + auction.min_increment;
 
   const onSubmit = (data) => {
     onBid(data.amount);
@@ -22,7 +22,7 @@ export default function BiddingInterface({ auction, onBid }) {
         <input
           id="bidAmount"
           type="number"
-          step={auction.minIncrement}
+          step={auction.min_increment}
           {...register('amount', {
             required: 'Bid amount is required',
             min: {
@@ -37,8 +37,8 @@ export default function BiddingInterface({ auction, onBid }) {
       </div>
       <div className="flex gap-2">
         <button type="button" onClick={() => quickBid(minBid)} className="flex-1 p-2 border rounded text-sm">${minBid}</button>
-        <button type="button" onClick={() => quickBid(minBid + auction.minIncrement)} className="flex-1 p-2 border rounded text-sm">${minBid + auction.minIncrement}</button>
-        <button type="button" onClick={() => quickBid(minBid + 2 * auction.minIncrement)} className="flex-1 p-2 border rounded text-sm">${minBid + 2 * auction.minIncrement}</button>
+        <button type="button" onClick={() => quickBid(minBid + auction.min_increment)} className="flex-1 p-2 border rounded text-sm">${minBid + auction.min_increment}</button>
+        <button type="button" onClick={() => quickBid(minBid + 2 * auction.min_increment)} className="flex-1 p-2 border rounded text-sm">${minBid + 2 * auction.min_increment}</button>
       </div>
       <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
         Place Bid

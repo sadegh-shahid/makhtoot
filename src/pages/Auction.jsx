@@ -1,15 +1,44 @@
-import React, { useState } from "react";
-import { auctions as initialAuctions } from "../data/products";
+import React, { useState, useEffect } from "react";
 import AuctionCard from "../components/auctions/AuctionCard";
-import { useMockRealTime } from "../hooks/useMockRealTime";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Auction() {
   const [activeTab, setActiveTab] = useState("live");
-  const auctions = useMockRealTime(initialAuctions);
+  const [auctions, setAuctions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const liveAuctions = auctions.filter(a => new Date(a.startTime) <= new Date() && new Date(a.endTime) > new Date());
-  const scheduledAuctions = auctions.filter(a => new Date(a.startTime) > new Date());
-  const endedAuctions = auctions.filter(a => new Date(a.endTime) <= new Date());
+  useEffect(() => {
+    const fetchAuctions = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('auctions')
+          .select(`
+            *,
+            items (
+              *
+            )
+          `);
+
+        if (error) {
+          throw error;
+        }
+
+        setAuctions(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAuctions();
+  }, []);
+
+  const liveAuctions = auctions.filter(a => new Date(a.start_time) <= new Date() && new Date(a.end_time) > new Date());
+  const scheduledAuctions = auctions.filter(a => new Date(a.start_time) > new Date());
+  const endedAuctions = auctions.filter(a => new Date(a.end_time) <= new Date());
 
   const TabButton = ({ tabName, title }) => (
     <button
@@ -19,6 +48,14 @@ export default function Auction() {
       {title}
     </button>
   );
+
+  if (loading) {
+    return <div className="p-6 text-center">Loading auctions...</div>;
+  }
+
+  if (error) {
+    return <div className="p-6 text-center text-red-500">Error: {error}</div>;
+  }
 
   return (
     <main className="pt-16 p-4 max-w-6xl mx-auto">
