@@ -4,8 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
-import ProductCard from "./ProductCard";
-import { products, artists } from "../data/products";
+import ProductCard from "../products/ProductCard";
+import { products, artists } from "../../data/products";
 
 export default function ShopSlider() {
   const artistNameOf = (id) => artists.find((a) => a.id === id)?.name || "";
