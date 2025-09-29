@@ -6,16 +6,16 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [favoriteItems, setFavoriteItems] = useState([]);
+  const [watchlistItems, setWatchlistItems] = useState([]);
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem("cartItems");
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
     }
-    const storedFavoriteItems = localStorage.getItem("favoriteItems");
-    if (storedFavoriteItems) {
-      setFavoriteItems(JSON.parse(storedFavoriteItems));
+    const storedWatchlistItems = localStorage.getItem("watchlistItems");
+    if (storedWatchlistItems) {
+      setWatchlistItems(JSON.parse(storedWatchlistItems));
     }
   }, []);
 
@@ -24,8 +24,8 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   useEffect(() => {
-    localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
-  }, [favoriteItems]);
+    localStorage.setItem("watchlistItems", JSON.stringify(watchlistItems));
+  }, [watchlistItems]);
 
   const addToCart = (item) => {
     setCartItems((prevItems) => {
@@ -48,8 +48,8 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
-  const toggleFavorite = (item) => {
-    setFavoriteItems((prevItems) => {
+  const toggleWatchlist = (item) => {
+    setWatchlistItems((prevItems) => {
       const itemExists = prevItems.find((i) => i.id === item.id);
       if (itemExists) {
         return prevItems.filter((i) => i.id !== item.id);
@@ -59,18 +59,18 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const isFavorite = (id) => {
-    return favoriteItems.some((item) => item.id === id);
+  const isInWatchlist = (id) => {
+    return watchlistItems.some((item) => item.id === id);
   };
 
   const value = {
     cartItems,
-    favoriteItems,
+    watchlistItems,
     addToCart,
     removeFromCart,
     clearCart,
-    toggleFavorite,
-    isFavorite,
+    toggleWatchlist,
+    isInWatchlist,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

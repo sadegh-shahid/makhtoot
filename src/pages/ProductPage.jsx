@@ -63,12 +63,10 @@ export default function ProductPage() {
 
                 if (error) throw error;
 
-                const auctionData = data.auctions[0];
-                if (auctionData) {
-                    auctionData.bids.sort((a, b) => b.amount - a.amount);
+                if (data.auctions && data.auctions.length > 0) {
+                    data.auctions[0].bids.sort((a, b) => b.amount - a.amount);
                 }
-                const formattedProduct = { ...data, ...auctionData };
-                setProduct(formattedProduct);
+                setProduct(data);
 
                 if (data.category) {
                     const { data: relatedData } = await supabase
@@ -88,8 +86,16 @@ export default function ProductPage() {
         };
 
         fetchProduct();
+    }, [id]);
 
-        const channel = supabase.channel(`product-page-${id}`);
+    useEffect(() => {
+        if (!product || !product.is_auction || !product.auctions || product.auctions.length === 0) {
+            return;
+        }
+
+        const auctionId = product.auctions[0].id;
+        const channel = supabase.channel(`product-page-${auctionId}`);
+
         channel
           .on(
             'postgres_changes',
@@ -97,14 +103,26 @@ export default function ProductPage() {
               event: 'INSERT',
               schema: 'public',
               table: 'bids',
-              filter: `auction_id=eq.${product?.id}`,
+              filter: `auction_id=eq.${auctionId}`,
             },
             (payload) => {
               setProduct((currentProduct) => {
                 const newBid = payload.new;
-                const updatedBids = [...currentProduct.bids, newBid];
-                updatedBids.sort((a, b) => b.amount - a.amount);
-                return { ...currentProduct, bids: updatedBids, current_bid: updatedBids[0].amount };
+
+                if (currentProduct.auctions[0].bids.find(b => b.id === newBid.id)) {
+                    return currentProduct;
+                }
+
+                const newBids = [...currentProduct.auctions[0].bids, newBid];
+                newBids.sort((a, b) => b.amount - a.amount);
+
+                const updatedAuction = {
+                    ...currentProduct.auctions[0],
+                    bids: newBids,
+                    current_bid: newBids[0].amount
+                };
+
+                return { ...currentProduct, auctions: [updatedAuction] };
               });
             }
           )
@@ -113,21 +131,26 @@ export default function ProductPage() {
         return () => {
           supabase.removeChannel(channel);
         };
-    }, [id, product?.id]);
+    }, [product]);
 
     const handleBid = async (amount) => {
+        if (!product || !product.is_auction) return;
         try {
-            const user_id = 'user-self-demo';
-            const { error } = await supabase
+            const user_id = 'user-self-demo'; // Placeholder
+            const auctionId = product.auctions[0].id;
+
+            const { error: bidError } = await supabase
                 .from('bids')
-                .insert([{ auction_id: product.id, amount, bidder_id: user_id }]);
+                .insert([{ auction_id: auctionId, amount: amount, bidder_id: user_id }]);
 
-            if (error) throw error;
+            if (bidError) throw bidError;
 
-            await supabase
+            const { error: auctionError } = await supabase
                 .from('auctions')
                 .update({ current_bid: amount })
-                .eq('id', product.id);
+                .eq('id', auctionId);
+
+            if (auctionError) throw auctionError;
 
             alert(`Your bid of $${amount} has been placed successfully!`);
         } catch (err) {
@@ -136,15 +159,17 @@ export default function ProductPage() {
     };
 
     const handleBuyNow = () => {
-        addToCart({ ...product, price: product.buy_now_price });
-        alert(`Item ${product.name} has been added to your cart for $${product.buy_now_price}.`);
+        if (!product || !product.is_auction) return;
+        addToCart({ ...product, price: product.auctions[0].buy_now_price });
+        alert(`Item ${product.name} has been added to your cart for $${product.auctions[0].buy_now_price}.`);
     };
 
     if (loading) return <div className="p-6 text-center">Loading product...</div>;
     if (error) return <div className="p-6 text-center text-red-500">Error: {error}</div>;
     if (!product) return <div className="p-6 text-center">Product not found.</div>;
 
-    const reserveMet = product.current_bid >= product.reserve_price;
+    const auction = product.auctions && product.auctions[0];
+    const reserveMet = auction && auction.current_bid >= auction.reserve_price;
 
     return (
         <div className="container mx-auto px-4 py-10">
@@ -188,22 +213,22 @@ export default function ProductPage() {
                     <p className="text-gray-600">{product.description}</p>
                     <p className="text-gray-700">Category: {product.category}</p>
 
-                    {product.is_auction ? (
+                    {product.is_auction && auction ? (
                         <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
                             <h2 className="text-xl font-bold text-blue-800 mb-2">Auction Details</h2>
-                            {new Date(product.start_time) > new Date() ? (
+                            {new Date(auction.start_time) > new Date() ? (
                                 <div>
                                 <p className="text-lg">Auction starts in:</p>
-                                <Countdown date={product.start_time} renderer={countdownRenderer} />
+                                <Countdown date={auction.start_time} renderer={countdownRenderer} />
                                 </div>
                             ) : (
                                 <div>
                                 <p className="text-lg">Auction ends in:</p>
-                                <Countdown date={product.end_time} renderer={countdownRenderer} />
+                                <Countdown date={auction.end_time} renderer={countdownRenderer} />
                                 <div className="my-4">
                                     <p className="text-lg">Current Bid:</p>
-                                    <p className="text-3xl font-bold text-blue-700">${product.current_bid || product.start_price}</p>
-                                    {product.reserve_price && (
+                                    <p className="text-3xl font-bold text-blue-700">${auction.current_bid || auction.start_price}</p>
+                                    {auction.reserve_price && (
                                     <p className={`text-sm ${reserveMet ? 'text-green-600' : 'text-red-600'}`}>
                                         {reserveMet ? 'Reserve price met' : 'Reserve price not met'}
                                     </p>
@@ -211,15 +236,15 @@ export default function ProductPage() {
                                 </div>
                                 <div className="flex gap-2">
                                     <div className="flex-grow">
-                                    <BiddingInterface auction={product} onBid={handleBid} />
+                                    <BiddingInterface auction={auction} onBid={handleBid} />
                                     </div>
-                                    {product.buy_now_price && (
+                                    {auction.buy_now_price && (
                                     <button onClick={handleBuyNow} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                                        Buy Now <br/> ${product.buy_now_price}
+                                        Buy Now <br/> ${auction.buy_now_price}
                                     </button>
                                     )}
                                 </div>
-                                <BidHistory bids={product.bids} />
+                                <BidHistory bids={auction.bids} />
                                 </div>
                             )}
                         </div>
