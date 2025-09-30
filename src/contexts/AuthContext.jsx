@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../utils/firebase';
+import { supabase } from '../utils/supabase';
 
 const AuthContext = createContext();
 
@@ -14,33 +12,76 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   async function signup(email, password, role) {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    await setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      role: role,
+    const { data: { user }, error } = await supabase.auth.signUp({
+      email,
+      password,
     });
-    // The onAuthStateChanged listener will set the currentUser
-    return userCredential;
+
+    if (error) {
+      throw error;
+    }
+
+    // Insert the user's role into the 'users' table
+    const { error: insertError } = await supabase
+      .from('users')
+      .insert([{ id: user.id, email: user.email, role: role }]);
+
+    if (insertError) {
+      throw insertError;
+    }
+
+    // The onAuthStateChange listener will set the currentUser
+    return user;
   }
 
   function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+    return supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
   }
 
   function logout() {
-    return signOut(auth);
+    return supabase.auth.signOut();
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          setCurrentUser({ ...user, ...userDoc.data() });
-        } else {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const user = session.user;
+        const { data: userProfile, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user profile:', error);
           setCurrentUser(user);
+        } else {
+          setCurrentUser({ ...user, ...userProfile });
+        }
+      }
+      setLoading(false);
+    };
+
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session) {
+        const user = session.user;
+        const { data: userProfile, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user profile:', error);
+          setCurrentUser(user);
+        } else {
+          setCurrentUser({ ...user, ...userProfile });
         }
       } else {
         setCurrentUser(null);
@@ -48,7 +89,9 @@ export function AuthProvider({ children }) {
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const value = {
