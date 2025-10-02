@@ -43,10 +43,10 @@ export default function ProductPage() {
                         modules={[Navigation, Thumbs]}
                         className="mySwiper2"
                     >
-                        <SwiperSlide>
+                        <SwiperSlide className="min-w-0 flex-shrink-0">
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
-                        <SwiperSlide>
+                        <SwiperSlide className="min-w-0 flex-shrink-0">
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
                     </Swiper>
@@ -59,10 +59,10 @@ export default function ProductPage() {
                         modules={[FreeMode, Navigation, Thumbs]}
                         className="mySwiper"
                     >
-                        <SwiperSlide>
+                        <SwiperSlide className="min-w-0 flex-shrink-0">
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
-                        <SwiperSlide>
+                        <SwiperSlide className="min-w-0 flex-shrink-0">
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
                     </Swiper>
@@ -112,7 +112,7 @@ export default function ProductPage() {
                         dir="rtl"
                     >
                         {relatedProducts.map((p) => (
-                            <SwiperSlide key={p.id}>
+                            <SwiperSlide key={p.id} className="min-w-0 flex-shrink-0">
                                 <ProductCard product={p} artistName={artists.find(a => a.id === p.artistId)?.name} />
                             </SwiperSlide>
                         ))}
