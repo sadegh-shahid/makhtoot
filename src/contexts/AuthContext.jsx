@@ -21,12 +21,17 @@ export function AuthProvider({ children }) {
       throw error;
     }
 
-    // Insert the user's role into the 'users' table
+    // The 'role' parameter is not used here as the 'profiles' table doesn't have a 'role' column.
+    // We will use the email as the username.
     const { error: insertError } = await supabase
-      .from('users')
-      .insert([{ id: user.id, email: user.email, role: role }]);
+      .from('profiles')
+      .insert([{ id: user.id, username: user.email }]);
 
     if (insertError) {
+      // If the profile insertion fails, we should probably handle it.
+      // For now, we'll throw the error.
+      // It might be a good idea to delete the user from auth if this fails.
+      console.error("Failed to create user profile:", insertError);
       throw insertError;
     }
 
@@ -51,7 +56,7 @@ export function AuthProvider({ children }) {
       if (session) {
         const user = session.user;
         const { data: userProfile, error } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
@@ -72,7 +77,7 @@ export function AuthProvider({ children }) {
       if (session) {
         const user = session.user;
         const { data: userProfile, error } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
