@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function signup(email, password, role) {
+  async function signup(email, password) {
     const { data: { user }, error } = await supabase.auth.signUp({
       email,
       password,
@@ -21,10 +21,10 @@ export function AuthProvider({ children }) {
       throw error;
     }
 
-    // Insert the user's role into the 'users' table
+    // Insert the user's username into the 'profiles' table
     const { error: insertError } = await supabase
-      .from('users')
-      .insert([{ id: user.id, email: user.email, role: role }]);
+      .from('profiles')
+      .insert([{ id: user.id, username: email.split('@')[0] }]);
 
     if (insertError) {
       throw insertError;
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
       if (session) {
         const user = session.user;
         const { data: userProfile, error } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
@@ -72,7 +72,7 @@ export function AuthProvider({ children }) {
       if (session) {
         const user = session.user;
         const { data: userProfile, error } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
