@@ -35,7 +35,7 @@ export default function ProductPage() {
             <title>{product.name} - گالری هنری پارسیان</title>
             <meta name="description" content={product.desc} />
             <div className="grid md:grid-cols-2 gap-8">
-                <div>
+                <div className="overflow-hidden">
                     <Swiper
                         spaceBetween={10}
                         navigation={true}
@@ -43,10 +43,10 @@ export default function ProductPage() {
                         modules={[Navigation, Thumbs]}
                         className="mySwiper2"
                     >
-                        <SwiperSlide className="min-w-0 flex-shrink-0">
+                        <SwiperSlide>
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
-                        <SwiperSlide className="min-w-0 flex-shrink-0">
+                        <SwiperSlide>
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
                     </Swiper>
@@ -59,10 +59,10 @@ export default function ProductPage() {
                         modules={[FreeMode, Navigation, Thumbs]}
                         className="mySwiper"
                     >
-                        <SwiperSlide className="min-w-0 flex-shrink-0">
+                        <SwiperSlide>
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
-                        <SwiperSlide className="min-w-0 flex-shrink-0">
+                        <SwiperSlide>
                             <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
                         </SwiperSlide>
                     </Swiper>
@@ -112,7 +112,7 @@ export default function ProductPage() {
                         dir="rtl"
                     >
                         {relatedProducts.map((p) => (
-                            <SwiperSlide key={p.id} className="min-w-0 flex-shrink-0">
+                            <SwiperSlide key={p.id}>
                                 <ProductCard product={p} artistName={artists.find(a => a.id === p.artistId)?.name} />
                             </SwiperSlide>
                         ))}
