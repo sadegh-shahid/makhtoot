@@ -1,5 +1,5 @@
 // src/pages/Auction.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Countdown from "react-countdown";
 import { auctions } from "../data/products";
 

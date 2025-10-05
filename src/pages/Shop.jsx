@@ -1,5 +1,5 @@
 // src/pages/Shop.jsx
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { products, artists, categories } from "../data/products";
 import ProductCard from "../components/ProductCard";
 

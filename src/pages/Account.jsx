@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Account() {
   return (
     <div className="max-w-md mx-auto mt-10">

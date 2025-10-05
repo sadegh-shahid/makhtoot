@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function ImageLightbox({ src, open, onClose }) {
   if (!open) return null;
   return (

@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { products, artists } from "../data/products";
 import ImageLightbox from "../components/ImageLightbox"; // if you have it; otherwise clicking opens same image larger in new tab
