@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 export default function SideMenu({ isOpen, onClose, onOpenAuth }) {

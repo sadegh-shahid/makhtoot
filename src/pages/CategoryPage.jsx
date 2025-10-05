@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { categories, products, artists } from "../data/products";
 import ProductCard from "../components/ProductCard";

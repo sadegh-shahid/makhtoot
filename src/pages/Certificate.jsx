@@ -1,5 +1,5 @@
 // src/pages/Certificate.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function Certificate() {
   const [sending, setSending] = useState(false);
