@@ -31,7 +31,7 @@ export default function ProductPage() {
     const isAuction = "startPrice" in product;
 
     return (
-        <div className="container mx-auto px-4 py-10">
+        <div className="product-page container mx-auto px-4 py-10">
             <title>{product.name} - گالری هنری پارسیان</title>
             <meta name="description" content={product.desc} />
             <div className="grid md:grid-cols-2 gap-8">
