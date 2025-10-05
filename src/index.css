@@ -39,6 +39,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.swiper-free-mode > .swiper-wrapper {
-  margin: 10px auto;
+.product-page .swiper-horizontal {
+  margin-top: 10px;
 }
