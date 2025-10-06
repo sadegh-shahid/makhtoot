@@ -1,16 +1,23 @@
 import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
+import Logo from "./Logo";
 
 export default function SideMenu({ isOpen, onClose, onOpenAuth }) {
   const panelRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
+      document.body.style.overflow = "hidden";
       // focus first focusable element
       const t = setTimeout(() => {
         panelRef.current?.querySelector("a,button,input")?.focus();
       }, 50);
-      return () => clearTimeout(t);
+      return () => {
+        document.body.style.overflow = "";
+        clearTimeout(t);
+      };
+    } else {
+      document.body.style.overflow = "";
     }
   }, [isOpen]);
 
@@ -28,9 +35,12 @@ export default function SideMenu({ isOpen, onClose, onOpenAuth }) {
         className={`absolute top-0 right-0 h-full w-[84%] max-w-sm bg-white shadow-xl p-5 overflow-y-auto transition-transform ${isOpen ? "translate-x-0" : "translate-x-full"}`}
         aria-hidden={!isOpen}
       >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold">منو</h3>
-          <button onClick={onClose} aria-label="close menu" className="text-gray-600">✕</button>
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Logo />
+            <span className="font-bold text-lg">مزایده اثار هنری (ماه)</span>
+          </div>
+          <button onClick={onClose} aria-label="close menu" className="text-gray-600 p-2 -mr-2">✕</button>
         </div>
 
         <nav className="flex flex-col gap-3 text-base">
