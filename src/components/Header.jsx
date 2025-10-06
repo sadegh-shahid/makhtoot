@@ -21,7 +21,7 @@ export default function Header({ onMenuToggle, onLoginClick }) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b">
-      <div className="max-w-6xl mx-auto flex items-center gap-3 p-3">
+      <div className="max-w-6xl mx-auto flex items-center justify-between md:justify-start gap-3 p-3">
         {/* Mobile hamburger on left */}
         <button
           onClick={onMenuToggle}
@@ -38,15 +38,25 @@ export default function Header({ onMenuToggle, onLoginClick }) {
 
         {/* Desktop nav (right after logo) */}
         <nav className="hidden md:flex items-center gap-4 ml-6">
-          <NavLink to="/" className={linkCls}>صفحه اصلی</NavLink>
-          <NavLink to="/shop" className={linkCls}>فروشگاه</NavLink>
-          <NavLink to="/auction" className={linkCls}>مزایده</NavLink>
-          <NavLink to="/sell" className={linkCls}>فروش</NavLink>
-          <NavLink to="/account" className={linkCls}>حساب کاربری</NavLink>
+          <NavLink to="/" className={linkCls}>
+            صفحه اصلی
+          </NavLink>
+          <NavLink to="/shop" className={linkCls}>
+            فروشگاه
+          </NavLink>
+          <NavLink to="/auction" className={linkCls}>
+            مزایده
+          </NavLink>
+          <NavLink to="/sell" className={linkCls}>
+            فروش
+          </NavLink>
+          <NavLink to="/account" className={linkCls}>
+            حساب کاربری
+          </NavLink>
         </nav>
 
         {/* Login & Cart on far end */}
-        <div className="mr-auto flex items-center gap-4">
+        <div className="flex items-center gap-4 md:ml-auto">
           <Link to="/cart" className="relative hidden md:block">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -58,9 +68,13 @@ export default function Header({ onMenuToggle, onLoginClick }) {
             )}
           </Link>
           {currentUser ? (
-            <button onClick={handleLogout} className="px-4 py-2 rounded-lg bg-red-500 text-white">خروج</button>
+            <button onClick={handleLogout} className="px-4 py-2 rounded-lg bg-red-500 text-white">
+              خروج
+            </button>
           ) : (
-            <button onClick={onLoginClick} className="px-4 py-2 rounded-lg bg-[var(--brand)] text-white">ورود</button>
+            <button onClick={onLoginClick} className="px-4 py-2 rounded-lg bg-[var(--brand)] text-white">
+              ورود
+            </button>
           )}
         </div>
       </div>
