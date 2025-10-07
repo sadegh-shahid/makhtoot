@@ -73,6 +73,7 @@ export default function Home() {
                   <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
                   <div className="p-3">
                     <h3 className="font-semibold">{item.name}</h3>
+                    <p className="text-sm text-gray-600 whitespace-pre-line">{item.summary}</p>
                     <p className="text-sm text-gray-600">{item.price}</p>
                   </div>
                 </article>
@@ -119,7 +120,7 @@ export default function Home() {
         </div>
 
         <div className="mt-4">
-          <Link to="/certificate" className="inline-block px-4 py-2 bg-[var(--brand)] text-white rounded">رفتن به فرم کامل</Link>
+          <Link to="/certificate" className="inline-block btn-primary">رفتن به فرم کامل</Link>
         </div>
       </section>
     </main>
@@ -201,7 +202,7 @@ function MiniRequestForm() {
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <button type="submit" className="px-4 py-2 bg-[var(--brand)] text-white rounded">ارسال درخواست</button>
+        <button type="submit" className="btn-primary">ارسال درخواست</button>
         <small className="text-gray-500 text-xs">ارسال به صورت دمو</small>
       </div>
     </form>

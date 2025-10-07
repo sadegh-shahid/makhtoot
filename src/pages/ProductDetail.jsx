@@ -34,7 +34,7 @@ export default function ProductDetail() {
         )}
         <p className="text-gray-700 mb-6">{product.desc}</p>
         <div className="flex gap-3">
-          <button className="bg-[var(--brand)] text-white px-4 py-2 rounded">افزودن به سبد خرید</button>
+          <button className="btn-primary">افزودن به سبد خرید</button>
           <button onClick={() => setLightSrc(product.image)} className="px-4 py-2 border rounded">مشاهده بزرگ</button>
         </div>
       </div>

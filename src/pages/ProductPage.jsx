@@ -79,7 +79,7 @@ export default function ProductPage() {
                     {isAuction ? (
                         <div>
                             <p className="text-xl font-semibold text-blue-600">شروع قیمت از: {product.startPrice}$</p>
-                            <button className="bg-blue-600 text-white rounded-lg px-4 py-2 mt-4">
+                            <button className="btn-primary mt-4">
                                 شرکت در مزایده
                             </button>
                         </div>
@@ -90,7 +90,7 @@ export default function ProductPage() {
                             </p>
                             <button
                                 onClick={() => addToCart(product)}
-                                className="bg-green-600 text-white rounded-lg px-4 py-2 mt-4"
+                                className="btn-primary mt-4"
                             >
                                 افزودن به سبد خرید
                             </button>

@@ -90,7 +90,7 @@ export default function Certificate() {
               </div>
 
               <div className="flex items-center justify-between">
-                <button type="submit" disabled={sending} className="px-4 py-2 bg-[var(--brand)] text-white rounded">
+                <button type="submit" disabled={sending} className="btn-primary">
                   {sending ? "در حال ارسال..." : "ثبت درخواست"}
                 </button>
                 <small className="text-gray-500 text-xs">اطلاعات موقتاً در مرورگر ذخیره می‌شود (دمو)</small>
