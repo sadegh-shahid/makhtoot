@@ -50,7 +50,7 @@ export default function App() {
         onOpenAuth={() => { setIsAuthOpen(true); setIsMenuOpen(false); }}
       />
 
-      <main className="flex-1 pt-16">
+      <main className="flex-1">
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/" element={<Home />} />
