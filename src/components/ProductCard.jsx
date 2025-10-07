@@ -36,7 +36,7 @@ export default function ProductCard({ product, artistName }) {
           </Link>
         ) : null}
 
-        <p className="text-xs text-gray-600">{product.desc}</p>
+        <div className="text-xs text-gray-600 whitespace-pre-line">{product.summary}</div>
       </div>
     </div>
   );

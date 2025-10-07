@@ -7,8 +7,8 @@
 
 /* Global RTL & font */
 :root {
-  --brand: #b48c64;
-  --brand-dark: #9c7650;
+  --brand: #000;
+  --brand-dark: #000;
 }
 
 html, body, #root { height: 100%; }
@@ -41,4 +41,10 @@ body {
 
 .product-page .swiper-horizontal {
   margin-top: 10px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: black !important;
+  transform: scale(0.5);
 }
