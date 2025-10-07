@@ -25,7 +25,7 @@ export default function Header({ onMenuToggle, onLoginClick }) {
         {/* Mobile hamburger on left */}
         <button
           onClick={onMenuToggle}
-          className="md:hidden w-10 h-10 rounded-lg border flex items-center justify-center"
+          className="md:hidden w-11 h-11 rounded-lg flex items-center justify-center"
           aria-label="menu"
         >
           ☰

@@ -69,6 +69,9 @@ export default function ProductPage() {
                 </div>
                 <div className="flex flex-col gap-4">
                     <h1 className="text-2xl font-bold">{product.name}</h1>
+                    {product.summary && (
+                        <div className="text-gray-700 whitespace-pre-line my-2">{product.summary}</div>
+                    )}
                     <p className="text-gray-600">{product.desc}</p>
                     {category && <p className="text-gray-700">دسته‌بندی: {category.title}</p>}
                     {artist && <p className="text-gray-700">هنرمند: {artist.name}</p>}

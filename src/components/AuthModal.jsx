@@ -67,7 +67,7 @@ export default function AuthModal({ isOpen, mode = "login", onClose, onSuccess }
             <input name="password" type="password" required placeholder="رمز عبور" className="w-full border p-2 rounded" />
             <div className="flex justify-between">
               <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-100 rounded">بستن</button>
-              <button type="submit" className="px-4 py-2 bg-[#b48c64] text-white rounded">ورود</button>
+              <button type="submit" className="px-4 py-2 bg-[var(--brand)] text-white rounded">ورود</button>
             </div>
           </form>
         ) : (
@@ -78,7 +78,7 @@ export default function AuthModal({ isOpen, mode = "login", onClose, onSuccess }
             <input name="confirm" type="password" required placeholder="تکرار رمز عبور" className="w-full border p-2 rounded" />
             <div className="flex justify-between">
               <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-100 rounded">بستن</button>
-              <button type="submit" className="px-4 py-2 bg-[#b48c64] text-white rounded">ثبت‌نام</button>
+              <button type="submit" className="px-4 py-2 bg-[var(--brand)] text-white rounded">ثبت‌نام</button>
             </div>
           </form>
         )}
