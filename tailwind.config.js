@@ -3,12 +3,13 @@ module.exports = {
   darkMode: 'class',
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    colors: {
+      black: "#000",
+      white: "#fff",
+      transparent: "transparent",
+      current: "currentColor",
+    },
     extend: {
-      colors: {
-        persianBlue: "#1B4F72",
-        persianGold: "#C49A6C",
-        offWhite: "#FAF8F5",
-      },
       fontFamily: {
         vazir: ["Vazirmatn", "sans-serif"],
       },
