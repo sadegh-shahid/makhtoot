@@ -42,7 +42,7 @@ export default function RequestForm() {
         </div>
       </div>
 
-      <button disabled={submitting} className="w-full md:w-auto px-5 py-2 rounded bg-[var(--brand)] text-white hover:bg-[var(--brand-dark)]">
+      <button disabled={submitting} className="w-full md:w-auto btn-primary">
         {submitting ? "در حال ثبت..." : "ثبت"}
       </button>
     </form>

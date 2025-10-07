@@ -72,7 +72,7 @@ export default function Header({ onMenuToggle, onLoginClick }) {
               خروج
             </button>
           ) : (
-            <button onClick={onLoginClick} className="px-4 py-2 rounded-lg bg-[var(--brand)] text-white">
+            <button onClick={onLoginClick} className="btn-primary">
               ورود
             </button>
           )}
