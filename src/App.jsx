@@ -34,8 +34,14 @@ export default function App() {
 
   // disable scroll when menu or auth is open
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen || isAuthOpen ? "hidden" : "auto";
-    return () => { document.body.style.overflow = "auto"; };
+    if (isMenuOpen || isAuthOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
   }, [isMenuOpen, isAuthOpen]);
 
   return (
