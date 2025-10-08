@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Header from "./components/Header";
 import SideMenu from "./components/SideMenu";
@@ -30,6 +30,7 @@ const LoadingFallback = () => (
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const location = useLocation();
 
   // disable scroll when menu or auth is open
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function App() {
         onOpenAuth={() => { setIsAuthOpen(true); setIsMenuOpen(false); }}
       />
 
-      <main className="flex-1 pt-16">
+      <main className={`flex-1 ${location.pathname !== "/" ? "pt-16" : ""}`}>
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/" element={<Home />} />
