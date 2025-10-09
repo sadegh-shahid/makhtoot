@@ -34,18 +34,37 @@ export default function App() {
 
   // disable scroll when menu or auth is open
   useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+
     if (isMenuOpen || isAuthOpen) {
-      document.body.classList.add("no-scroll");
+      root.classList.add("no-scroll");
+      body.classList.add("no-scroll");
     } else {
-      document.body.classList.remove("no-scroll");
+      root.classList.remove("no-scroll");
+      body.classList.remove("no-scroll");
     }
     return () => {
-      document.body.classList.remove("no-scroll");
+      root.classList.remove("no-scroll");
+      body.classList.remove("no-scroll");
     };
   }, [isMenuOpen, isAuthOpen]);
 
+  // Fix for mobile viewport height
+  useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVh();
+    window.addEventListener('resize', setVh);
+
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col" dir="rtl">
+    <div className="min-h-screen-dynamic flex flex-col" dir="rtl">
       <Header
         onMenuToggle={() => setIsMenuOpen(true)}
         onLoginClick={() => setIsAuthOpen(true)}
