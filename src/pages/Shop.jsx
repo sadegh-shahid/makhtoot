@@ -34,7 +34,7 @@ export default function Shop() {
 
   return (
     <main className="pt-16 p-4 md:p-6 max-w-6xl mx-auto">
-      <title>فروشگاه - گالری هنری پارسیان</title>
+      <title>فروشگاه - مزایده اثار هنری (ماه)</title>
       <meta name="description" content="محصولات هنری اصیل ایرانی را از فروشگاه ما خریداری کنید." />
       <h1 className="text-2xl font-bold mb-4">فروشگاه</h1>
 
