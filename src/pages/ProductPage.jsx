@@ -43,12 +43,11 @@ export default function ProductPage() {
                         modules={[Navigation, Thumbs]}
                         className="mySwiper2"
                     >
-                        <SwiperSlide>
-                            <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
-                        </SwiperSlide>
+                        {product.images.map((image, index) => (
+                            <SwiperSlide key={index}>
+                                <img src={image} alt={`${product.name} ${index + 1}`} className="w-full rounded-xl shadow" loading="lazy" />
+                            </SwiperSlide>
+                        ))}
                     </Swiper>
                     <Swiper
                         onSwiper={setThumbsSwiper}
@@ -57,14 +56,13 @@ export default function ProductPage() {
                         freeMode={true}
                         watchSlidesProgress={true}
                         modules={[FreeMode, Navigation, Thumbs]}
-                        className="mySwiper"
+                        className="mySwiper mt-2"
                     >
-                        <SwiperSlide>
-                            <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src={product.image} alt={product.name} className="w-full rounded-xl shadow" loading="lazy" />
-                        </SwiperSlide>
+                        {product.images.map((image, index) => (
+                            <SwiperSlide key={index}>
+                                <img src={image} alt={`${product.name} ${index + 1}`} className="w-full rounded-xl shadow cursor-pointer" loading="lazy" />
+                            </SwiperSlide>
+                        ))}
                     </Swiper>
                 </div>
                 <div className="flex flex-col gap-4">
