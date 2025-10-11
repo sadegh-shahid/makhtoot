@@ -32,7 +32,7 @@ export default function ProductPage() {
 
     return (
         <div className="product-page container mx-auto px-4 py-10">
-            <title>{product.name} - گالری هنری پارسیان</title>
+            <title>{product.name} - مزایده اثار هنری (ماه)</title>
             <meta name="description" content={product.desc} />
             <div className="grid md:grid-cols-2 gap-8">
                 <div className="overflow-hidden">

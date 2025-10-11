@@ -8,7 +8,7 @@ export default function CartPage() {
 
   return (
     <main className="pt-16 p-4 md:p-6 max-w-4xl mx-auto">
-      <title>سبد خرید - گالری هنری پارسیان</title>
+      <title>سبد خرید - مزایده اثار هنری (ماه)</title>
       <h1 className="text-2xl font-bold mb-6">سبد خرید شما</h1>
 
       {cartItems.length === 0 ? (

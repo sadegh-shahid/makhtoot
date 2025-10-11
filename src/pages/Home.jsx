@@ -10,7 +10,7 @@ import "swiper/css/pagination";
 export default function Home() {
   return (
     <main className="pt-16">
-      <title>گالری هنری پارسیان - صفحه اصلی</title>
+      <title>مزایده اثار هنری (ماه) - صفحه اصلی</title>
       <meta name="description" content="گالری هنری آنلاین پارسیان، محلی برای نمایش و فروش آثار هنری اصیل ایرانی." />
       {/* ✅ Hero Carousel */}
       <section className="mb-6">
