@@ -1,8 +1,9 @@
 // src/pages/Home.jsx
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  Pagination } from "swiper/modules";
-import { products, auctions } from "../data/products";
+import { Pagination } from "swiper/modules";
+import { products, auctions, artists } from "../data/products";
+import ProductCard from "../components/ProductCard";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -15,8 +16,7 @@ export default function Home() {
       {/* ✅ Hero Carousel */}
       <section className="mb-6">
         <Swiper
-          modules={[ Pagination]}
-          
+          modules={[Pagination]}
           pagination={{ clickable: true }}
           loop
           className="h-[300px] md:h-[500px]"
@@ -60,24 +60,14 @@ export default function Home() {
         </div>
 
         <Swiper
-         
           spaceBetween={16}
           slidesPerView={1.2}
-          breakpoints={{ 768: { slidesPerView: 3 } }}
+          breakpoints={{ 768: { slidesPerView: 4 } }}
           dir="rtl"
         >
-          {products.map((item) => (
-            <SwiperSlide key={item.id}>
-              <Link to={`/product/${item.id}`}>
-                <article className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition">
-                  <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
-                  <div className="p-3">
-                    <h3 className="font-semibold">{item.name}</h3>
-                    <p className="text-sm text-gray-600 whitespace-pre-line">{item.summary}</p>
-                    <p className="text-sm text-gray-600">{item.price}</p>
-                  </div>
-                </article>
-              </Link>
+          {products.map((p) => (
+            <SwiperSlide key={p.id}>
+              <ProductCard product={p} artistName={artists.find(a => a.id === p.artistId)?.name} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -96,17 +86,9 @@ export default function Home() {
           breakpoints={{ 768: { slidesPerView: 2 } }}
           dir="rtl"
         >
-          {auctions.map((a) => (
-            <SwiperSlide key={a.id}>
-              <Link to={`/product/${a.id}`}>
-                <article className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition">
-                  <img src={a.image} alt={a.name} className="w-full h-48 object-cover" />
-                  <div className="p-3">
-                    <h3 className="font-semibold">{a.name}</h3>
-                    <p className="text-sm text-gray-600">{a.desc}</p>
-                  </div>
-                </article>
-              </Link>
+          {auctions.map((p) => (
+            <SwiperSlide key={p.id}>
+              <ProductCard product={p} />
             </SwiperSlide>
           ))}
         </Swiper>
