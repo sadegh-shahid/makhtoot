@@ -1,7 +1,8 @@
 // src/pages/Auction.jsx
 import { useState, useEffect } from "react";
 import Countdown from "react-countdown";
-import { auctions } from "../data/products";
+import { auctions, artists } from "../data/products";
+import ProductCard from "../components/ProductCard";
 
 const AuctionCard = ({ auction }) => {
   const [bids, setBids] = useState([]);
@@ -48,14 +49,16 @@ const AuctionCard = ({ auction }) => {
     }
   };
 
+  const artistName = artists.find(a => a.id === auction.artistId)?.name;
+
   return (
     <article className="bg-white rounded-lg shadow overflow-hidden flex flex-col">
-      <img src={auction.image} alt={auction.name} className="w-full h-56 object-cover" loading="lazy" />
+      <ProductCard product={auction} artistName={artistName} />
       <div className="p-3 flex flex-col flex-grow">
-        <h3 className="font-semibold">{auction.name}</h3>
-        <p className="text-sm text-gray-600">{auction.desc}</p>
         <div className="my-2">
-          <p>بالاترین پیشنهاد: <span className="font-bold">{highestBid}$</span></p>
+          <p>
+            بالاترین پیشنهاد: <span className="font-bold">{highestBid}$</span>
+          </p>
         </div>
         <div className="my-2">
           <Countdown date={auction.endDate} renderer={renderer} />

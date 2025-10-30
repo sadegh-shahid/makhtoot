@@ -81,6 +81,8 @@ export const auctions = [
       "/images/products/101.webp",
     ],
     desc: "قالیچه دستباف ابریشمی از قم با طرح درختی",
+    summary: "این یک خلاصه سه خطی برای قالیچه ابریشمی قم است.\\nاین قالیچه دارای طرح و رنگ زیبایی است.\\nمناسب برای دکوراسیون منزل شما.",
+    artistId: "attarbashi",
     startPrice: 1500,
     endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000)
   },
