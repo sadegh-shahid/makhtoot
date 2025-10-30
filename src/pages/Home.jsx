@@ -88,7 +88,7 @@ export default function Home() {
         >
           {auctions.map((p) => (
             <SwiperSlide key={p.id}>
-              <ProductCard product={p} />
+              <ProductCard product={p} artistName={artists.find(a => a.id === p.artistId)?.name} />
             </SwiperSlide>
           ))}
         </Swiper>
