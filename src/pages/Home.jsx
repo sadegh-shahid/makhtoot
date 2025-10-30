@@ -83,7 +83,7 @@ export default function Home() {
         <Swiper
           spaceBetween={16}
           slidesPerView={1.2}
-          breakpoints={{ 768: { slidesPerView: 2 } }}
+          breakpoints={{ 768: { slidesPerView: 4 } }}
           dir="rtl"
         >
           {auctions.map((p) => (
@@ -95,7 +95,7 @@ export default function Home() {
       </section>
 
       {/* ✅ Mini Request Form */}
-      <section className="p-4 md:p-6">
+      <section className="p-4 md:p-6 md:max-w-2xl md:mx-auto">
         <h2 className="text-xl font-bold mb-3">درخواست ثبت اثر (سریع)</h2>
         <div className="bg-white rounded-xl p-4 border">
           <MiniRequestForm />
