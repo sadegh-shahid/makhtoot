@@ -33,7 +33,7 @@ This is a web application for an online art gallery that hosts auctions for vari
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/parsian-art-gallery.git
+    git clone https://github.com/sadegh-shahid/makhtoot.git
     cd parsian-art-gallery
     ```
 2.  **Install dependencies:**
