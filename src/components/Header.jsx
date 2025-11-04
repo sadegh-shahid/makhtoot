@@ -38,9 +38,7 @@ export default function Header({ onMenuToggle, onLoginClick }) {
 
         {/* Desktop nav (right after logo) */}
         <nav className="hidden md:flex items-center gap-4 ml-6">
-          <NavLink to="/" className={linkCls}>
-            صفحه اصلی
-          </NavLink>
+        
           <NavLink to="/shop" className={linkCls}>
             فروشگاه
           </NavLink>
