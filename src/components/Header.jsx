@@ -49,8 +49,8 @@ export default function Header({ onMenuToggle, onLoginClick }) {
             فروش
           </NavLink>
            
-          <NavLink to="/about" >درباره ما</NavLink>
-          <NavLink to="/contact" >تماس با ما</NavLink>
+          <NavLink to="/about" className={linkCls} >درباره ما</NavLink>
+          <NavLink to="/contact" className={linkCls} >تماس با ما</NavLink>
           
           <NavLink to="/account" className={linkCls}>
             حساب کاربری
